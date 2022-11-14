@@ -160,6 +160,7 @@ def move_player(direction):
 def move(path):
     for p in path:
         move_player(p)
+        # 여기서 딜레이를 줘야함,,,
 
 
 def btn_run_click(*args):
