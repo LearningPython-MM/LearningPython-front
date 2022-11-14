@@ -1,4 +1,3 @@
-
 import sys
 import time
 import binascii
@@ -8,7 +7,27 @@ import javascript
 
 from browser import document, html, window, console, bind, websocket
 import browser.widgets.dialog as dialog
-import turtle
+from browser import timer
+
+nowX = 13
+nowY = 1
+map = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2],
+    [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+    [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1],
+    [1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+    [1, 3, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
 
 
 def reset_src():
@@ -19,7 +38,7 @@ def reset_src():
         if storage is not None and "py_src" in storage:
             editor.setValue(storage["py_src"])
         else:
-            editor.setValue("for i in range(10):\n    print(i)")
+            editor.setValue("def solution():\n    return [0,1,2,3]")
         if "py_test" in storage and "files" in document:
             document["files"].selectedIndex = int(storage["py_test"])
     editor.scrollToRow(0)
@@ -30,21 +49,117 @@ def reset_src_area():
     if storage and "py_src" in storage:
         editor.value = storage["py_src"]
     else:
-        editor.value = "for i in range(10):\n    print(i)"
+        editor.value = "def solution():\n    return [0,1,2,3]"
 
 
 def reset_editor():
     if has_ace:
         reset_src()
     else:
-        eset_src_area()
+        reset_src_area()
 
 
-def reset_turtle():
-    turtle.restart()
-    turtle.set_defaults(turtle_canvas_wrapper=document["turtle-div"])
+def draw_board():
+    global map
 
-    # Run the script
+    tag = ""
+
+    for i in range(0, len(map), 1):
+        tag += "<table bgcolor='black' border='1'><tr>"
+        for j in range(0, len(map[i]), 1):
+            tag += "<td id=x{}y{} width='15' height='15'></td>".format(i, j)
+        tag += "</tr></table>"
+
+    document["maze-div"].innerHTML += tag
+
+
+draw_board()
+
+
+def change_color(x, y, color):
+    id = "x{}y{}".format(x, y)
+    document[id].style.backgroundColor = color
+
+
+def load_maze():
+    global map
+
+    for i in range(0, len(map), 1):
+        for j in range(0, len(map[i]), 1):
+            if (map[i][j] == 1):
+                change_color(i, j, "#980000")
+                # 벽돌
+
+            elif (map[i][j] == 2):
+                change_color(i, j, "#FFFF48")
+                # 출구
+
+            elif (map[i][j] == 3):
+                change_color(i, j, "#90E4FF")
+                # document.getElementById("x"+i+"y"+j).innerHTML = "<img src='Kkobuk.jpg' width='30' height='25'>"
+
+            elif (map[i][j] == 0):
+                change_color(i, j, "white")
+                # document.getElementById("x"+i+"y"+j).innerHTML = "<img src=''>"
+
+
+def erase():
+    for i in range(0, 15, 1):
+        for j in range(0, 15, 1):
+            change_color(i, j, "white")
+
+
+load_maze()
+
+
+def move_player(direction):
+    global nowX
+    global nowY
+    global map
+
+    if direction == 0:  # up
+        map[nowX][nowY] = 0
+        nowX -= 1
+        if (map[nowX][nowY] == 1):
+            nowX += 1
+        elif (map[nowX][nowY] == 2):
+            alert("축하합니다! 클리어하셨습니다.")
+        map[nowX][nowY] = 3
+
+    elif direction == 2:  # right
+        map[nowX][nowY] = 0
+        nowY += 1
+        if (map[nowX][nowY] == 1):
+            nowY -= 1
+        elif (map[nowX][nowY] == 2):
+            alert("축하합니다! 클리어하셨습니다.")
+        map[nowX][nowY] = 3
+
+    elif direction == 3:  # left
+        map[nowX][nowY] = 0
+        nowY -= 1
+        if (map[nowX][nowY] == 1):
+            nowY += 1
+        elif (map[nowX][nowY] == 2):
+            alert("축하합니다! 클리어하셨습니다.")
+        map[nowX][nowY] = 3
+
+    elif direction == 1:  # down
+        map[nowX][nowY] = 0
+        nowX += 1
+        if (map[nowX][nowY] == 1):
+            nowX -= 1
+        elif (map[nowX][nowY] == 2):
+            alert("축하합니다! 클리어하셨습니다.")
+        map[nowX][nowY] = 3
+
+    erase()
+    load_maze()
+
+
+def move(path):
+    for p in path:
+        move_player(p)
 
 
 def btn_run_click(*args):
@@ -53,17 +168,20 @@ def btn_run_click(*args):
     if storage is not None:
         storage["py_src"] = src
 
-    reset_turtle()
-
     t0 = time.perf_counter()
+
     try:
         ns = {"__name__": "__main__"}
-        exec(src, ns)
+        exec(src, ns, globals())
         state = 1
     except Exception as exc:
         traceback.print_exc(file=sys.stderr)
         state = 0
+
     sys.stdout.flush()
+
+    result_soultion = solution_test()
+    move(result_soultion)
 
     print(f"<completed in {((time.perf_counter() - t0) * 1000.0):6.2f} ms>")
 
@@ -74,7 +192,6 @@ def btn_run_click(*args):
 
 def btn_clear_click(*args):
     document["console"].value = ""
-    reset_turtle()
 
     # Switch between Light and Dark mode
 
@@ -105,17 +222,17 @@ class cOutput:
     def __len__(self):
         return len(self.buf)
 
-    # console.log(window.M)
 
-    # from interpreter import Interpreter
-    # Interpreter(globals=globals())
+# console.log(window.M)
 
+# from interpreter import Interpreter
+# Interpreter(globals=globals())
 
-    # Set height of editor_container to fit the screen
+# Set height of editor_container to fit the screen
 _height = int(document.documentElement.clientHeight - 205)
 document["editor"].style.height = f"{_height}px"
 document["console"].style.height = f"{_height}px"
-document["turtle-div"].style.height = f"{_height}px"
+document["maze-div"].style.height = f"{_height}px"
 
 try:
     editor = window.ace.edit("editor")
@@ -163,10 +280,9 @@ if "console" in document:
     sys.stderr = cOut
 
 reset_editor()
-reset_turtle()
 
 document["btn_run"].bind("click", lambda *args: btn_run_click())
-# document["btn_clear"].bind("click", lambda *args: btn_clear_click())
+document["btn_clear"].bind("click", lambda *args: btn_clear_click())
 document["btn_brightness"].bind("click", lambda *args: btn_brightness_click())
 
 # Must do window.M.AutoInit() after all html being loaded!
