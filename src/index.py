@@ -7,27 +7,11 @@ import javascript
 
 from browser import document, html, window, console, bind, websocket
 import browser.widgets.dialog as dialog
-from browser import timer
 
-nowX = 13
-nowY = 1
-map = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 2],
-    [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-    [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1],
-    [1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
-    [1, 3, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
+import maze
+
+defaultCode = "{0}\n\ndef solution():\n    return [0,1,2,3]".format(
+    maze.get_maze_text())
 
 
 def reset_src():
@@ -38,7 +22,7 @@ def reset_src():
         if storage is not None and "py_src" in storage:
             editor.setValue(storage["py_src"])
         else:
-            editor.setValue("def solution():\n    return [0,1,2,3]")
+            editor.setValue(defaultCode)
         if "py_test" in storage and "files" in document:
             document["files"].selectedIndex = int(storage["py_test"])
     editor.scrollToRow(0)
@@ -49,118 +33,21 @@ def reset_src_area():
     if storage and "py_src" in storage:
         editor.value = storage["py_src"]
     else:
-        editor.value = "def solution():\n    return [0,1,2,3]"
+        editor.value = defaultCode
 
 
 def reset_editor():
+    maze.reset_maze()
+
     if has_ace:
         reset_src()
     else:
         reset_src_area()
 
 
-def draw_board():
-    global map
+maze.draw_board()
 
-    tag = ""
-
-    for i in range(0, len(map), 1):
-        tag += "<table bgcolor='black' border='1'><tr>"
-        for j in range(0, len(map[i]), 1):
-            tag += "<td id=x{}y{} width='15' height='15'></td>".format(i, j)
-        tag += "</tr></table>"
-
-    document["maze-div"].innerHTML += tag
-
-
-draw_board()
-
-
-def change_color(x, y, color):
-    id = "x{}y{}".format(x, y)
-    document[id].style.backgroundColor = color
-
-
-def load_maze():
-    global map
-
-    for i in range(0, len(map), 1):
-        for j in range(0, len(map[i]), 1):
-            if (map[i][j] == 1):
-                change_color(i, j, "#980000")
-                # 벽돌
-
-            elif (map[i][j] == 2):
-                change_color(i, j, "#FFFF48")
-                # 출구
-
-            elif (map[i][j] == 3):
-                change_color(i, j, "#90E4FF")
-                # document.getElementById("x"+i+"y"+j).innerHTML = "<img src='Kkobuk.jpg' width='30' height='25'>"
-
-            elif (map[i][j] == 0):
-                change_color(i, j, "white")
-                # document.getElementById("x"+i+"y"+j).innerHTML = "<img src=''>"
-
-
-def erase():
-    for i in range(0, 15, 1):
-        for j in range(0, 15, 1):
-            change_color(i, j, "white")
-
-
-load_maze()
-
-
-def move_player(direction):
-    global nowX
-    global nowY
-    global map
-
-    if direction == 0:  # up
-        map[nowX][nowY] = 0
-        nowX -= 1
-        if (map[nowX][nowY] == 1):
-            nowX += 1
-        elif (map[nowX][nowY] == 2):
-            alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-
-    elif direction == 2:  # right
-        map[nowX][nowY] = 0
-        nowY += 1
-        if (map[nowX][nowY] == 1):
-            nowY -= 1
-        elif (map[nowX][nowY] == 2):
-            alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-
-    elif direction == 3:  # left
-        map[nowX][nowY] = 0
-        nowY -= 1
-        if (map[nowX][nowY] == 1):
-            nowY += 1
-        elif (map[nowX][nowY] == 2):
-            alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-
-    elif direction == 1:  # down
-        map[nowX][nowY] = 0
-        nowX += 1
-        if (map[nowX][nowY] == 1):
-            nowX -= 1
-        elif (map[nowX][nowY] == 2):
-            alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-
-    erase()
-    load_maze()
-
-
-def move(path):
-    for p in path:
-        move_player(p)
-        # 여기서 딜레이를 줘야함,,,
+maze.load_maze()
 
 
 def btn_run_click(*args):
@@ -181,8 +68,8 @@ def btn_run_click(*args):
 
     sys.stdout.flush()
 
-    result_soultion = solution_test()
-    move(result_soultion)
+    result_soultion = solution()
+    maze.move(result_soultion)
 
     print(f"<completed in {((time.perf_counter() - t0) * 1000.0):6.2f} ms>")
 
@@ -193,7 +80,9 @@ def btn_run_click(*args):
 
 def btn_clear_click(*args):
     document["console"].value = ""
-
+    maze.reset_maze()
+    editor.value = defaultCode
+    editor.setValue(defaultCode)
     # Switch between Light and Dark mode
 
 
