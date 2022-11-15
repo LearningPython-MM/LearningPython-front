@@ -31,7 +31,17 @@ map = [
 
 
 def get_maze_text():
-    text = "map = [\n"
+    text = "# n x m 넓이의 미로\n"
+    text = text + "n, m = {0}, {1}\n\n".format(n, m)
+
+    text = text + "# 방향 리스트 (상,하,좌,우)\n"
+    text = text + "direction=[0, 1, 2, 3]\n\n"
+
+    text = text + "# 시작 인덱스\n"
+    text = text + "startX = {0}\nstartY = {1}\n\n".format(nowX, nowY)
+
+    text = text + "# 미로 2차원 배열\n"
+    text = text + "maze_load = [\n"
 
     for i in range(0, len(map), 1):
         text = text + "    {0}".format(map[i]) + ",\n"

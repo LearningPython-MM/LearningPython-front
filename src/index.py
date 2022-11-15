@@ -10,7 +10,7 @@ import browser.widgets.dialog as dialog
 
 import maze
 
-defaultCode = "{0}\n\ndef solution():\n    return [0,1,2,3]".format(
+defaultCode = "{0}\n\n# 코드를 함수 안에 넣어 리스트로 반환하세요.\ndef solution():\n    return [0,1,2,3]".format(
     maze.get_maze_text())
 
 
@@ -119,10 +119,12 @@ class cOutput:
 # Interpreter(globals=globals())
 
 # Set height of editor_container to fit the screen
-_height = int(document.documentElement.clientHeight - 205)
-document["editor"].style.height = f"{_height}px"
-document["console"].style.height = f"{_height}px"
-document["maze-div"].style.height = f"{_height}px"
+_height_editor = int(document.documentElement.clientHeight)
+_height_console = int(document.documentElement.clientHeight - 467)
+_height_maze = int(document.documentElement.clientHeight - 300)
+document["editor"].style.height = f"{_height_editor}px"
+document["console"].style.height = f"{_height_console}px"
+document["maze-div"].style.height = f"{_height_maze}px"
 
 try:
     editor = window.ace.edit("editor")
