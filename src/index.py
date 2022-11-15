@@ -10,8 +10,9 @@ import browser.widgets.dialog as dialog
 
 import maze
 
-defaultCode = "{0}\n\n# 코드를 함수 안에 넣어 리스트로 반환하세요.\ndef solution():\n    return [0,1,2,3]".format(
-    maze.get_maze_text())
+javascript.import_js("maze.js", alias="js_module")
+
+defaultCode = maze.get_maze_text()
 
 
 def reset_src():
@@ -80,9 +81,8 @@ def btn_run_click(*args):
 
 def btn_clear_click(*args):
     document["console"].value = ""
+
     maze.reset_maze()
-    editor.value = defaultCode
-    editor.setValue(defaultCode)
     # Switch between Light and Dark mode
 
 

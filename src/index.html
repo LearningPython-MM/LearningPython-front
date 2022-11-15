@@ -3,9 +3,10 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Python Editor</title>
+		<title>🤭 a MAZEing Python 🤭</title>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 
+		<!-- material css -->
 		<link
 			href="https://fonts.googleapis.com/icon?family=Material+Icons"
 			rel="stylesheet"
@@ -30,6 +31,8 @@
 			src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.7/brython_stdlib.min.js"
 		></script>
 
+		<!-- brython js -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ext-language_tools.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/mode-python.min.js"></script>
@@ -37,13 +40,34 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/theme-dracula.min.js"></script>
 
 		<script type="text/python" src="index.py"></script>
+		<script type="text/javascript" src="maze.js"></script>
 	</head>
 
 	<body onload="brython(1)">
+		<!-- Modal Structure -->
+		<div id="modal1" class="modal" style="z-index: 100; position: absolute">
+			<div class="modal-content">
+				<h4 id="modal-title">미로 탈출 성공!</h4>
+				<p id="maze-score">점수: 100</p>
+				<p id="maze-time">소요시간: 10m</p>
+			</div>
+			<div class="modal-footer">
+				<a
+					href="#!"
+					class="modal-close waves-effect waves-green btn-flat"
+					>Agree</a
+				>
+			</div>
+		</div>
+
 		<nav class="teal" role="navigation">
 			<div class="nav-wrapper container">
-				<!-- a id="logo-container" href="#" class="brand-logo">Logo</a -->
-				<div class="brand-logo center">Python Editor</div>
+				<!-- <a id="logo-container" href="#" class="brand-logo">Logo</a> -->
+				<a
+					class="brand-logo center"
+					href="https://www.youtube.com/c/KeechulJung"
+					>🤭 a MAZEing Python 🤭</a
+				>
 
 				<!-- Top nav and side nav components here
             
@@ -96,7 +120,7 @@
 						<div>
 							<div
 								id="maze-div"
-								style="border: 1px solid blue"
+								style="border: 1px solid black"
 							></div>
 						</div>
 

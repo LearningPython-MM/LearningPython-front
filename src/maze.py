@@ -1,4 +1,10 @@
+import javascript
 from browser import document, html, window, console, bind, websocket
+from browser.widgets.dialog import InfoDialog
+
+jq = window.jQuery
+
+javascript.import_js("maze.js", alias="js_module")
 
 n, m = 15, 15
 
@@ -32,21 +38,27 @@ map = [
 
 def get_maze_text():
     text = "# n x m 넓이의 미로\n"
-    text = text + "n, m = {0}, {1}\n\n".format(n, m)
+    text += "n, m = {0}, {1}\n\n".format(n, m)
 
-    text = text + "# 방향 리스트 (상,하,좌,우)\n"
-    text = text + "direction=[0, 1, 2, 3]\n\n"
+    text += "# 방향 리스트 (상,하,좌,우)\n"
+    text += "direction = [0,1,2,3]\n\n"
 
-    text = text + "# 시작 인덱스\n"
-    text = text + "startX = {0}\nstartY = {1}\n\n".format(nowX, nowY)
+    text += "# 시작 인덱스\n"
+    text += "startX = {0}\nstartY = {1}\n\n".format(nowX, nowY)
 
-    text = text + "# 미로 2차원 배열\n"
-    text = text + "maze_load = [\n"
+    text += "# 미로 2차원 배열\n"
+    text += "maze_load = [\n"
 
     for i in range(0, len(map), 1):
-        text = text + "    {0}".format(map[i]) + ",\n"
+        text += "    {0}".format(map[i]) + ",\n"
 
-    text = text + "]"
+    text += "]\n\n"
+
+    text += "# 코드를 함수 안에 넣어 리스트로 반환하세요.\n"
+    text += "def solution():\n"
+    # text += "    return [0,1,2,3]"
+    text += "    return [0, 0, 0, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0, 2, 0, 0, 0, 2, 2, 0, 0, 2]"
+
     return text
 
 
@@ -111,57 +123,16 @@ def erase():
             change_color(i, j, "white")
 
 
-def move_player(direction):
-    global nowX
-    global nowY
-    global map
-
-    if direction == 0:  # up
-        map[nowX][nowY] = 1
-        nowX -= 1
-        if (map[nowX][nowY] == 0):
-            nowX += 1
-        elif (map[nowX][nowY] == 2):
-            map[nowX][nowY] = 3
-            # alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
-
-    elif direction == 3:  # right
-        map[nowX][nowY] = 1
-        nowY += 1
-        if (map[nowX][nowY] == 0):
-            nowY -= 1
-        elif (map[nowX][nowY] == 2):
-            map[nowX][nowY] = 3
-            # alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
-
-    elif direction == 2:  # left
-        map[nowX][nowY] = 1
-        nowY -= 1
-        if (map[nowX][nowY] == 0):
-            nowY += 1
-        elif (map[nowX][nowY] == 2):
-            map[nowX][nowY] = 3
-            # alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
-
-    elif direction == 1:  # down
-        map[nowX][nowY] = 1
-        nowX += 1
-        if (map[nowX][nowY] == 0):
-            nowX -= 1
-        elif (map[nowX][nowY] == 2):
-            map[nowX][nowY] = 3
-            # alert("축하합니다! 클리어하셨습니다.")
-        map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
-
-
 def move(path):
-    for p in path:
-        move_player(p)
-        # 여기에 딜레이,,,
+    js_module.load_maze(map, nowX, nowY, path)
+
+
+def show_result_modal(result):
+    if result:
+        document["modal-title"].text = "미로 탈출 성공 🥳"
+    else:
+        document["modal-title"].text = "미로 탈출 실패 😢"
+
+    elems = document["modal1"]
+    modal = window.M.Modal.init(elems, {})
+    modal.open()
