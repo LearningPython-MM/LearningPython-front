@@ -28,7 +28,7 @@ function move(maze, x, y, path) {
 
     refreshIntervalId = setInterval(function run() {
         result = move_player(pathList, i++);
-    }, 200);
+    }, 300);
 }
 
 function move_player(pathList, i) {
@@ -41,7 +41,7 @@ function move_player(pathList, i) {
 
     if (direction == 0) {
         map[nowX][nowY] = 1;
-        change_color(nowX, nowY, "waterballun")
+        change_image(nowX, nowY, "waterballun")
 
         nowX -= 1;
 
@@ -54,12 +54,12 @@ function move_player(pathList, i) {
         }
 
         map[nowX][nowY] = 3;
-        change_color(nowX, nowY, "miggyung");
+        change_image(nowX, nowY, "miggyung");
     }
     // up
     else if (direction == 3) {
         map[nowX][nowY] = 1
-        change_color(nowX, nowY, "waterballun")
+        change_image(nowX, nowY, "waterballun")
 
         nowY += 1
 
@@ -72,12 +72,12 @@ function move_player(pathList, i) {
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "miggyung")
+        change_image(nowX, nowY, "miggyung")
     }
     // right
     else if (direction == 2) {
         map[nowX][nowY] = 1
-        change_color(nowX, nowY, "waterballun")
+        change_image(nowX, nowY, "waterballun")
 
         nowY -= 1
 
@@ -90,12 +90,12 @@ function move_player(pathList, i) {
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "miggyung")
+        change_image(nowX, nowY, "miggyung")
     }  // left
 
     else if (direction == 1) {
         map[nowX][nowY] = 1
-        change_color(nowX, nowY, "waterballun")
+        change_image(nowX, nowY, "waterballun")
 
         nowX += 1
 
@@ -108,13 +108,20 @@ function move_player(pathList, i) {
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "miggyung")
+        change_image(nowX, nowY, "miggyung")
     }  // down
 }
 
-function change_color(x, y, imageUrl) {
+function change_image(x, y, imageUrl) {
     var id = "x" + String(x) + "y" + String(y);
-    document.getElementById(id).style.backgroundImage = "url('./image/" + imageUrl + ".png')";
+
+    if (imageUrl == "ground") {
+        document.getElementById(id).style.display = "none"
+    }
+    else {
+        document.getElementById(id).style.display = "inherit"
+        document.getElementById(id).src = "./image/" + imageUrl + ".png";
+    }
 }
 
 function judge_game(result) {
@@ -130,15 +137,15 @@ function show_result_modal(result, score) {
         if (messege == "") {
             document.getElementById("maze-time").textContent = "소요 시간: " + buildTime + "초"
         } else {
-            document.getElementById("maze-time").textContent = "다음번엔 점수를 더 올려보는거 어떄요?"
+            document.getElementById("maze-time").textContent = "다음엔 점수를 더 올려보는거 어때요?"
         }
     } else {
         document.getElementById("modal-title").textContent = "미로 탈출 실패 😢 "
         document.getElementById("maze-score").textContent = "코드 점수: " + score
-        document.getElementById("maze-time").textContent = " 다시 도전해 보세용"
+        document.getElementById("maze-time").textContent = "다시 도전해 보세용"
     }
 
-    document.getElementById("maze-noti").textContent = messege
+    document.getElementById("maze-noti").innerHTML = messege
 
     elems = document.getElementById("modal1")
     modal = M.Modal.init(elems, {})

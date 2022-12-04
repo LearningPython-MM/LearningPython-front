@@ -57,6 +57,9 @@ maze.load_maze()
 
 
 def btn_run_click(*args):
+    document["btn_playing"].style.display = 'inline-block'
+    document["btn_run"].style.display = 'none'
+
     document["console"].value = ""
     src = editor.getValue()
     if storage is not None:
@@ -111,6 +114,8 @@ def btn_brightness_click(*args):
 
 
 def btn_done_click(*args):
+    document["btn_playing"].style.display = 'none'
+    document["btn_run"].style.display = 'inline-block'
     maze.reset_maze()
 
 
@@ -136,8 +141,8 @@ class cOutput:
 _height_editor = int(document.documentElement.clientHeight + 100)
 height = _height_editor / 3
 _height_console = height - 5
-_height_maze = height * 2
-document["editor"].style.height = f"{_height_editor}px"
+_height_maze = int((document.documentElement.clientWidth / 2) - 80)
+document["editor"].style.height = f"{_height_maze + _height_console}px"
 document["console"].style.height = f"{_height_console}px"
 document["maze-div"].style.height = f"{_height_maze}px"
 
@@ -189,9 +194,11 @@ if "console" in document:
 start_game()
 
 document["btn_run"].bind("click", lambda *args: btn_run_click())
+document["btn_playing"].style.display = 'none'
+document["btn_run"].style.display = 'inline-block'
 document["btn_clear"].bind("click", lambda *args: btn_clear_click())
 document["btn_brightness"].bind("click", lambda *args: btn_brightness_click())
-document["btn_done"].bind("click", lambda *args: btn_done_click())
+document["btn_replay"].bind("click", lambda *args: btn_done_click())
 
 # Must do window.M.AutoInit() after all html being loaded!
 window.M.AutoInit()

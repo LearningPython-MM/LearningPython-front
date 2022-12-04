@@ -55,10 +55,16 @@
 			</div>
 			<div class="modal-footer">
 				<a
-					id="btn_done"
+					id="btn_replay"
 					href="#!"
 					class="modal-close waves-effect waves-green btn-flat"
-					>확인</a
+					>다시하기</a
+				>
+				<a
+					id="btn_next"
+					href="/src/stage/stageList.html"
+					class="modal-close waves-effect waves-green btn-flat"
+					>스테이지 선택 화면으로 가기</a
 				>
 			</div>
 		</div>
@@ -68,7 +74,7 @@
 				<a
 					class="brand-logo center"
 					href="stage/stageList.html"
-					>🤭 a MAZEing Python 🤭</a
+					>🤭 A MAZEing Python 🤭</a
 				>
 			</div>
 		</nav>
@@ -80,6 +86,7 @@
 				<div class="row">
 					<div class="col s12 m12 l6">
 						<div class="row">
+							<a id="btn_playing" class="btn">Running...</a>
 							<a id="btn_run" class="btn">Run</a>
 							<a
 								id="btn_clear"
