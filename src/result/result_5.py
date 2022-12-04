@@ -36,7 +36,6 @@ count = [[0]*m for _ in range(n)]
 # 상하좌우 이동용 방향
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
-directions = [0, 1, 2, 3]
 
 # BFS 소스 코드 구현
 
@@ -69,10 +68,10 @@ def solution():
             # 미로 찾기 공간을 벗어난 경우 무시
             if nx < 0 or ny < 0 or nx >= n or ny >= m:
                 continue
-            # 0인 경우 괴물이므로 무시
+            # 0인 경우 벽임
             if maze_load[nx][ny] == 0:
                 continue
-            # 해당 노드를 처음 방문하는 경우에만 최단 거리 기록
+            # 해당 노드를 처음 방문하는 경우에만 기록
             if maze_load[nx][ny] == 1:
                 maze_load[nx][ny] = maze_load[x][y] + 1
                 queue.append((nx, ny))

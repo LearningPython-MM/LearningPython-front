@@ -1,0 +1,31 @@
+.grace {
+    width: 15px;
+    height: 15px;
+    background-color: purple;
+}
+
+#console {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    font-size: 16px;
+    font-family: Consolas, Menlo, Monaco,
+        Lucida Console, Liberation Mono,
+        DejaVu Sans Mono,
+        Bitstream Vera Sans Mono, Courier New,
+        monospace, serif;
+    background-color: #2e3436;
+    color: #eeeeec;
+    border: 1px solid grey;
+}
+
+#maze-div {
+    border: 1px solid #2e3436;
+    background-color: rgb(161, 148, 46);
+}
+
+#editor {
+    width: 100%;
+    border: 1px solid grey;
+    font-size: 16px;
+}

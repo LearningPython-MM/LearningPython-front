@@ -1,0 +1,158 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>🤭 A MAZEing Python 🤭</title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+		<!-- material css -->
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+			type="text/css"
+			rel="stylesheet"
+			media="screen,projection"
+		/>
+		<script
+			type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
+		></script>
+
+		<script
+			type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.7/brython.min.js"
+		></script>
+		<script
+			type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.7/brython_stdlib.min.js"
+		></script>
+
+		<!-- brython js -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ext-language_tools.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/mode-python.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/theme-chrome.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/theme-dracula.min.js"></script>
+
+		<link rel="stylesheet" href="stageList.css">
+	</head>
+
+	<body onload="brython(1)">		
+		<nav class="teal" role="navigation">
+			<div class="nav-wrapper container">
+				<a
+					class="brand-logo center"
+					href="https://www.youtube.com/c/KeechulJung"
+					>🤭 a MAZEing Python 🤭</a
+				>
+			</div>
+		</nav>
+
+		<div><p><br></p></div>
+
+		<table id="stage_table">
+			<tr>
+				<td>
+					<div class="row">
+						<div class="col s12 m7">
+						  <div class="card">
+							<div class="card-image">
+							  <img src="/src/image/stage1.png">
+							  <span class="card-title">STAGE 1</span>
+							</div>
+							<div class="card-content">
+								<p>[직진 코스]<br/>난이도 ⭐️</p>
+								반복문 사용해보기
+							</div>
+							<div class="card-action">
+							  <a href="/src/game.html?stage=0">도전해보기!</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				</td>
+				<td>
+					<div class="row">
+						<div class="col s12 m7">
+						  <div class="card">
+							<div class="card-image">
+							  <img src="/src/image/stage2.png">
+							  <span class="card-title">STAGE 2</span>
+							</div>
+							<div class="card-content">
+							  <p>[직우 코스]<br/>난이도 ⭐️⭐️</p>
+							  반복문과 분기문 사용해보기
+							</div>
+							<div class="card-action">
+							  <a href="/src/game.html?stage=1">도전해보기!</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				</td>
+				<td>
+					<div class="row">
+						<div class="col s12 m7">
+						  <div class="card">
+							<div class="card-image">
+							  <img src="/src/image/stage3.png">
+							  <span class="card-title">STAGE 3</span>
+							</div>
+							<div class="card-content">
+								<p>[직좌 코스]<br/>난이도 ⭐️⭐️</p>
+								반복문과 분기문 사용해보기
+							</div>
+							<div class="card-action">
+							  <a href="/src/game.html?stage=2">도전해보기!</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				</td>
+				<td>
+					<div class="row">
+						<div class="col s12 m7">
+						  <div class="card">
+							<div class="card-image">
+							  <img src="/src/image/stage4.png">
+							  <span class="card-title">STAGE 4</span>
+							</div>
+							<div class="card-content">
+							  <p>[유턴 코스]<br/>난이도 ⭐️⭐️⭐️</p>
+							  이중 반복문 사용해보기
+							</div>
+							<div class="card-action">
+							  <a href="/src/game.html?stage=3">도전해보기!</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				</td>
+				<td>
+					<div class="row">
+						<div class="col s12 m7">
+						  <div class="card">
+							<div class="card-image">
+							  <img src="/src/image/stage5.png">
+							  <span class="card-title">STAGE 5</span>
+							</div>
+							<div class="card-content">
+								<p>[미로 코스]<br/>난이도 ⭐️⭐️⭐️⭐️</p>
+								queue 사용해보기
+							</div>
+							<div class="card-action">
+							  <a href="/src/game.html?stage=4">도전해보기!</a>
+							</div>
+						  </div>
+						</div>
+					  </div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

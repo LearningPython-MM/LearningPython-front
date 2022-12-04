@@ -1,36 +1,39 @@
 var $module = {
-    load_maze: function fx(maze, x, y, path) {
+    load_maze: function fx(maze, x, y, path, time, totalScore, noti) {
+        buildTime = time
+        score = totalScore
+        messege = noti
         move(maze, x, y, path)
     }
 }
 
-function load_maze(text){
-    alert("hi")
-}
+var buildTime = 0.0
+var score = 0
+var messege = ""
 
 var map = [[]]
 var nowX = 0
 var nowY = 0
 var refreshIntervalId = ""
 
-function move(maze, x, y, path){
+function move(maze, x, y, path) {
     var result = false
     map = maze
     nowX = x
     nowY = y
 
     var pathList = Object.values(path)
-    
+
     var i = 0;
-    
+
     refreshIntervalId = setInterval(function run() {
         result = move_player(pathList, i++);
     }, 200);
 }
 
-function move_player(pathList, i){
-    if (i >= pathList.length){
-        show_result_modal(false)
+function move_player(pathList, i) {
+    if (i >= pathList.length) {
+        judge_game(false)
         return
     }
 
@@ -38,113 +41,106 @@ function move_player(pathList, i){
 
     if (direction == 0) {
         map[nowX][nowY] = 1;
+        change_color(nowX, nowY, "waterballun")
+
         nowX -= 1;
 
-        if (map[nowX][nowY] == 0){
+        if (map[nowX][nowY] == 0) {
             nowX += 1;
         }
-        else if (map[nowX][nowY] == 2){
+        else if (map[nowX][nowY] == 2) {
             map[nowX][nowY] = 3;
-            show_result_modal(true)
+            judge_game(true)
         }
 
         map[nowX][nowY] = 3;
-        change_color(nowX, nowY, "#FFFF48");
-    }  
+        change_color(nowX, nowY, "miggyung");
+    }
     // up
-    else if (direction == 3){
+    else if (direction == 3) {
         map[nowX][nowY] = 1
+        change_color(nowX, nowY, "waterballun")
+
         nowY += 1
 
-        if (map[nowX][nowY] == 0){
+        if (map[nowX][nowY] == 0) {
             nowY -= 1
         }
-        else if (map[nowX][nowY] == 2){
+        else if (map[nowX][nowY] == 2) {
             map[nowX][nowY] = 3
-            show_result_modal(true)
+            judge_game(true)
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
-    }  
+        change_color(nowX, nowY, "miggyung")
+    }
     // right
-    else if (direction == 2){
+    else if (direction == 2) {
         map[nowX][nowY] = 1
+        change_color(nowX, nowY, "waterballun")
+
         nowY -= 1
 
-        if (map[nowX][nowY] == 0){
+        if (map[nowX][nowY] == 0) {
             nowY += 1
         }
-        else if (map[nowX][nowY] == 2){
+        else if (map[nowX][nowY] == 2) {
             map[nowX][nowY] = 3
-            show_result_modal(true)
+            judge_game(true)
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
+        change_color(nowX, nowY, "miggyung")
     }  // left
 
-    else if (direction == 1){
+    else if (direction == 1) {
         map[nowX][nowY] = 1
+        change_color(nowX, nowY, "waterballun")
+
         nowX += 1
 
-        if (map[nowX][nowY] == 0){
+        if (map[nowX][nowY] == 0) {
             nowX -= 1
         }
-        else if (map[nowX][nowY] == 2){
+        else if (map[nowX][nowY] == 2) {
             map[nowX][nowY] = 3
-            show_result_modal(true)
+            judge_game(true)
         }
 
         map[nowX][nowY] = 3
-        change_color(nowX, nowY, "#FFFF48")
+        change_color(nowX, nowY, "miggyung")
     }  // down
 }
 
-function change_color(x, y, color){
-    var id = "x"+ String(x) +"y" + String(y);
-    document.getElementById(id).style.backgroundColor = color;
+function change_color(x, y, imageUrl) {
+    var id = "x" + String(x) + "y" + String(y);
+    document.getElementById(id).style.backgroundImage = "url('./image/" + imageUrl + ".png')";
 }
 
-function show_result_modal(result) {
+function judge_game(result) {
     clearInterval(refreshIntervalId)
 
+    show_result_modal(result, score)
+}
+
+function show_result_modal(result, score) {
     if (result) {
-        document.getElementById("modal-title").textContent = "미로 탈출 성공 🥳"
+        document.getElementById("modal-title").textContent = "미로 탈출 성공 🥳 "
+        document.getElementById("maze-score").textContent = "코드 점수: " + score
+        if (messege == "") {
+            document.getElementById("maze-time").textContent = "소요 시간: " + buildTime + "초"
+        } else {
+            document.getElementById("maze-time").textContent = "다음번엔 점수를 더 올려보는거 어떄요?"
+        }
     } else {
-        document.getElementById("modal-title").textContent = "미로 탈출 실패 😢"
+        document.getElementById("modal-title").textContent = "미로 탈출 실패 😢 "
+        document.getElementById("maze-score").textContent = "코드 점수: " + score
+        document.getElementById("maze-time").textContent = " 다시 도전해 보세용"
     }
+
+    document.getElementById("maze-noti").textContent = messege
 
     elems = document.getElementById("modal1")
     modal = M.Modal.init(elems, {})
     modal.open()
 }
-
-
-
-// def load_maze():
-//     global map
-
-//     for i in range(0, len(map), 1):
-//         for j in range(0, len(map[i]), 1):
-//             if (map[i][j] == 0):
-//                 change_color(i, j, "#980000")
-
-//             elif (map[i][j] == 2):
-//                 change_color(i, j, "#FFFF48")
-//                 # 출구
-
-//             elif (map[i][j] == 3):
-//                 change_color(i, j, "#90E4FF")
-//                 # document.getElementById("x"+i+"y"+j).innerHTML = "<img src='Kkobuk.jpg' width='30' height='25'>"
-
-//             elif (map[i][j] == 1):
-//                 change_color(i, j, "white")
-//                 # document.getElementById("x"+i+"y"+j).innerHTML = "<img src=''>"
-
-
-// function erase(){
-//     for i in range(0, n, 1):
-//         for j in range(0, m, 1):
-//             change_color(i, j, "white")
-// }

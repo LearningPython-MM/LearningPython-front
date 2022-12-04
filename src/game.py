@@ -34,7 +34,7 @@ def reset_src_area():
     if storage and "py_src" in storage:
         editor.value = storage["py_src"]
     else:
-        editor.value = defaultCode
+        editor.setValue(defaultCode)
 
 
 def reset_editor():
@@ -44,6 +44,11 @@ def reset_editor():
         reset_src()
     else:
         reset_src_area()
+
+
+def start_game():
+    maze.reset_maze()
+    editor.setValue(defaultCode)
 
 
 maze.draw_board()
@@ -67,23 +72,33 @@ def btn_run_click(*args):
         traceback.print_exc(file=sys.stderr)
         state = 0
 
+    buildTime = ((time.perf_counter() - t0) * 1000.0)
     sys.stdout.flush()
 
     result_soultion = solution()
-    maze.move(result_soultion)
 
-    print(f"<completed in {((time.perf_counter() - t0) * 1000.0):6.2f} ms>")
+    checkIsList(result_soultion)
+
+    result = maze.GameResult(src, buildTime, result_soultion)
+
+    maze.move(result)
+
+    print(f"<completed in {(buildTime):6.2f} ms>")
 
     return state
 
     # Clear output and restart turtle
 
 
+def checkIsList(numList):
+    if all(isinstance(n, int) for n in numList) == False:
+        raise Exception('정수로 이루어진 리스트를 반환하세요.')
+
+
 def btn_clear_click(*args):
     document["console"].value = ""
 
     maze.reset_maze()
-    # Switch between Light and Dark mode
 
 
 def btn_brightness_click(*args):
@@ -93,6 +108,10 @@ def btn_brightness_click(*args):
     else:
         document["btn_brightness"].lastChild.text = "brightness_4"
         editor.setTheme("ace/theme/dracula")
+
+
+def btn_done_click(*args):
+    maze.reset_maze()
 
 
 class cOutput:
@@ -113,15 +132,11 @@ class cOutput:
         return len(self.buf)
 
 
-# console.log(window.M)
-
-# from interpreter import Interpreter
-# Interpreter(globals=globals())
-
 # Set height of editor_container to fit the screen
-_height_editor = int(document.documentElement.clientHeight)
-_height_console = int(document.documentElement.clientHeight - 467)
-_height_maze = int(document.documentElement.clientHeight - 300)
+_height_editor = int(document.documentElement.clientHeight + 100)
+height = _height_editor / 3
+_height_console = height - 5
+_height_maze = height * 2
 document["editor"].style.height = f"{_height_editor}px"
 document["console"].style.height = f"{_height_console}px"
 document["maze-div"].style.height = f"{_height_maze}px"
@@ -171,11 +186,12 @@ if "console" in document:
     sys.stdout = cOut
     sys.stderr = cOut
 
-reset_editor()
+start_game()
 
 document["btn_run"].bind("click", lambda *args: btn_run_click())
 document["btn_clear"].bind("click", lambda *args: btn_clear_click())
 document["btn_brightness"].bind("click", lambda *args: btn_brightness_click())
+document["btn_done"].bind("click", lambda *args: btn_done_click())
 
 # Must do window.M.AutoInit() after all html being loaded!
 window.M.AutoInit()
