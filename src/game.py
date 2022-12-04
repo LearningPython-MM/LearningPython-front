@@ -143,8 +143,8 @@ height = _height_editor / 3
 _height_console = height - 5
 _height_maze = int((document.documentElement.clientWidth / 2) - 80)
 document["editor"].style.height = f"{_height_maze + _height_console}px"
-document["console"].style.height = f"{_height_console}px"
 document["maze-div"].style.height = f"{_height_maze}px"
+document["console"].style.height = f"{_height_console}px"
 
 try:
     editor = window.ace.edit("editor")
